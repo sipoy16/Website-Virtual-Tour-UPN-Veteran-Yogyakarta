@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Welcome To Laboratory UPN "Veteran" Yogyakarta</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  body, html {
+    height: 100%;
+    background: url('images/6059c191262cc.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #f6e500;
+    overflow-x: hidden;
+  }
+
+  /* Overlay for text clarity */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(15,15,0,0.7);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Landing Page 1 and 2 base styles for transitions */
+  #landing1, #landing2 {
+    position: relative;
+    transition: 
+      opacity 0.9s ease, 
+      transform 0.9s ease, 
+      filter 0.9s ease;
+    transform-origin: center center;
+    z-index: 1;
+  }
+  .visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1) blur(0);
+  }
+  .hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95) blur(2px);
+  }
+
+  /* Landing Page 1 */
+  #landing1 {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 24px;
+    background: transparent;
+  }
+  #landing1 h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-shadow:
+      3px 3px 8px rgba(30,30,0,0.9),
+      0 0 25px #f6e500,
+      0 0 30px #f6e500;
+    margin-bottom: 20px;
+    animation: blink 1.5s infinite alternate;
+    max-width: 900px;
+    color: #f6e500;
+  }
+  #landing1 p {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 50px;
+    max-width: 710px;
+    font-style: italic;
+    color: #f6e500;
+    text-shadow:
+      1.5px 1.5px 4px rgba(30,30,0,0.9);
+    animation: blink 1.5s infinite alternate;
+  }
+
+  /* Buttons - modern gradient with subtle shadows */
+  .btn {
+    cursor: pointer;
+    background: linear-gradient(145deg, #f6e500, #d4c300);
+    border: none;
+    padding: 14px 36px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #2a2400;
+    border-radius: 35px;
+    box-shadow:
+      0 4px 7px #b3a700,
+      inset 0 -3px 5px #b3a700;
+    transition: all 0.3s ease;
+    user-select: none;
+    animation: blink 1.5s infinite alternate;
+  }
+  .btn:hover, .btn:focus {
+    background: linear-gradient(155deg, #d4c300, #f6e500);
+    box-shadow:
+      0 6px 12px #b3a700,
+      inset 0 -3px 5px #d4c300;
+    outline: none;
+    transform: translateY(-3px);
+  }
+
+  /* Landing Page 2 */
+  #landing2 {
+    min-height: 100vh;
+    overflow-y: auto;
+    background: transparent;
+  }
+  #landing2::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15,15,0,0.75);
+    z-index: -1;
+  }
+
+  /* Navbar */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(15,15,0,0.9);
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    box-shadow: 0 2px 9px rgba(30,30,0,0.8);
+    backdrop-filter: saturate(180%) blur(12px);
+    z-index: 1001;
+    gap: 22px;
+  }
+
+  .nav-left {
+    font-weight: 900;
+    font-size: 1.35rem;
+    color: #f6e500;
+    user-select: none;
+    text-shadow:
+      0 0 12px #d4c300,
+      0 0 20px #b3a700;
+    font-family: 'Segoe UI Black', 'Arial Black', sans-serif;
+    white-space: nowrap;
+    animation: blink 1.5s infinite alternate;
+  }
+  .nav-left span {
+    font-style: italic;
+    font-weight: 900;
+    color: #d4c300;
+    text-shadow: 0 0 15px #b3a700cc;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  nav a, nav button {
+    background: none;
+    border: none;
+    color: #f6e500;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 10px 18px;
+    border-radius: 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+    user-select: none;
+    animation: blink 1.5s infinite alternate;
+  }
+  nav a:hover, nav button:hover,
+  nav a:focus, nav button:focus {
+    background: #b3a70022;
+    color: #d4c300;
+    outline: none;
+  }
+
+  /* Hamburger styles */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1100;
+  }
+  .hamburger span {
+    height: 3.5px;
+    width: 100%;
+    background-color: #f6e500;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    transition: 0.3s ease;
+  }
+  .hamburger span:last-child {
+    margin-bottom: 0;
+  }
+  /* toggle hamburger open animation */
+  .hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* Responsive - Show hamburger on small screens */
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 20px;
+    }
+    .nav-right {
+      position: fixed;
+      top: 70px;
+      right: 0;
+      background: rgba(15,15,0,0.95);
+      height: calc(100vh - 70px);
+      width: 230px;
+      flex-direction: column;
+      align-items: start;
+      gap: 0;
+      padding-top: 15px;
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+      box-shadow: -4px 0 12px rgba(0,0,0,0.7);
+    }
+    .nav-right.open {
+      transform: translateX(0);
+    }
+    nav a, nav button {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 0;
+      box-sizing: border-box;
+      border-bottom: 1px solid #d4c30055;
+    }
+    .hamburger {
+      display: flex;
+      position: fixed;
+      top: 18px;
+      right: 22px;
+    }
+  }
+
+  /* Back Button */
+  #backBtn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1010;
+    background: linear-gradient(145deg, #f6e500, #d4c300);
+    border-radius: 30px;
+    padding: 10px 22px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #2a2400;
+    box-shadow:
+      0 4px 7px #b3a70088,
+      inset 0 -3px 5px #b3a700cc;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+    animation: blink 1.5s infinite alternate;
+  }
+  #backBtn:hover, #backBtn:focus {
+    background: linear-gradient(155deg, #d4c300, #f6e500);
+    box-shadow:
+      0 6px 12px #b3a700cc,
+      inset 0 -3px 5px #d4c300;
+    outline: none;
+    transform: translateY(-3px);
+  }
+
+  /* Sections */
+  .section {
+    max-width: 960px;
+    margin: 110px auto 80px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+    background: rgba(15, 15, 0, 0.6);
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(15,15,0,0.7);
+    backdrop-filter: saturate(180%) blur(10px);
+  }
+  .section h2 {
+    font-size: 2.7rem;
+    font-weight: 900;
+    color: #f6e500;
+    margin-bottom: 18px;
+    border-bottom: 3.5px solid #b3a700;
+    display: inline-block;
+    animation: blink 1.5s infinite alternate;
+  }
+  .section p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #f6e500cc;
+    animation: blink 1.5s infinite alternate;
+  }
+
+  /* Features grid */
+  #features .feature-card {
+    background: rgba(30, 30, 0, 0.7);
+    border-radius: 20px;
+    box-shadow:
+      0 0 20px 4px #b3a700cc;
+    padding: 26px;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    cursor: default;
+  }
+  #features .feature-card:hover, #features .feature-card:focus {
+    transform: translateY(-14px);
+    box-shadow:
+      0 0 40px 7px #f6e500;
+    outline: none;
+  }
+  #features .feature-card h3 {
+    margin-bottom: 16px;
+    color: #f6e500;
+    font-size: 1.45rem;
+    font-weight: 900;
+    animation: blink 1.5s infinite alternate;
+  }
+  #features .feature-card p {
+    font-size: 1.1rem;
+    color: #dcdc8c;
+  }
+
+  /* Contact styles */
+  #contact h3 {
+    color: #f6e500;
+    font-weight: 900;
+    margin-bottom: 14px;
+    animation: blink 1.5s infinite alternate;
+  }
+  #contact p {
+    font-size: 1.15rem;
+    color: #f6e500cc;
+  }
+  #contact a {
+    color: #f6e500cc;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.35s ease;
+  }
+  #contact a:hover, #contact a:focus {
+    color: #f6e500;
+    text-decoration: underline;
+    outline: none;
+  }
+
+  /* Virtual Tour Section */
+  #virtual-tour {
+    max-width: 960px;
+    margin: 110px auto 80px;
+    padding: 40px 24px;
+    position: relative;
+    z-index: 1;
+    background: rgba(15, 15, 0, 0.7);
+    border-radius: 22px;
+    box-shadow: 0 8px 30px rgba(180,150,0,0.9);
+    text-align: center;
+  }
+  #virtual-tour h2 {
+    font-size: 2.9rem;
+    font-weight: 900;
+    color: #f6e500;
+    margin-bottom: 25px;
+    text-shadow:
+      0 0 22px #f6e500cc,
+      0 0 34px #b3a700cc;
+    animation: blink 1.5s infinite alternate;
+  }
+  #virtual-tour .btn {
+    font-size: 1.35rem;
+    padding: 18px 48px;
+    border-radius: 40px;
+    box-shadow:
+      0 0 30px 7px #b3a700cc,
+      inset 0 -5px 12px #d4c300cc;
+    transition: all 0.4s ease;
+    color: #2a2400;
+    background: linear-gradient(145deg, #f6e500, #d4c300);
+  }
+  #virtual-tour .btn:hover, #virtual-tour .btn:focus {
+    box-shadow:
+      0 0 40px 11px #f6e500cc,
+      inset 0 -5px 15px #b3a700cc;
+    background: linear-gradient(145deg, #d4c300, #f6e500);
+    outline: none;
+    transform: translateY(-5px);
+  }
+
+  /* Animations */
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 20px;
+    }
+    .nav-right {
+      position: fixed;
+      top: 70px;
+      right: 0;
+      background: rgba(15,15,0,0.95);
+      height: calc(100vh - 70px);
+      width: 230px;
+      flex-direction: column;
+      align-items: start;
+      gap: 0;
+      padding-top: 15px;
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+      box-shadow: -4px 0 12px rgba(0,0,0,0.7);
+    }
+    .nav-right.open {
+      transform: translateX(0);
+    }
+    nav a, nav button {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 0;
+      box-sizing: border-box;
+      border-bottom: 1px solid #d4c30055;
+    }
+    .hamburger {
+      display: flex;
+      position: fixed;
+      top: 18px;
+      right: 22px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    #landing1 h1 {
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      max-width: 100%;
+    }
+    nav {
+      justify-content: space-between;
+      padding: 0 12px;
+      gap: 14px;
+    }
+    .nav-left {
+      font-size: 1.1rem;
+      padding-left: 8px;
+    }
+    .nav-right {
+      gap: 10px;
+    }
+    nav a, nav button {
+      font-size: 0.95rem;
+      padding: 8px 10px;
+    }
+    nav #musicToggleBtn {
+      font-size: 1.1rem;
+      margin-left: 8px;
+      padding: 6px 12px;
+    }
+    #backBtn {
+      bottom: 20px;
+      left: 20px;
+      padding: 8px 18px;
+      font-size: 1rem;
+    }
+    #virtual-tour {
+      margin: 100px 15px 65px;
+      padding: 28px 20px;
+    }
+    #virtual-tour h2 {
+      font-size: 2rem;
+    }
+    #virtual-tour .btn {
+      font-size: 1.15rem;
+      padding: 14px 36px;
+    }
+    .section {
+      margin: 90px 15px 50px;
+      padding: 16px 18px;
+    }
+    .section h2 {
+      font-size: 2.1rem;
+    }
+    .section p {
+      font-size: 1rem;
+    }
+    #features .feature-card {
+      padding: 18px 14px;
+    }
+    #features .feature-card h3 {
+      font-size: 1.2rem;
+    }
+    #features .feature-card p {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* Music button positioned bottom right */
+  #musicToggleBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1101;
+    background: linear-gradient(145deg, #f6e500, #d4c300);
+    box-shadow:
+      0 4px 7px #b3a70088,
+      inset 0 -3px 5px #b3a700cc;
+    border-radius: 30px;
+    padding: 8px 14px;
+    font-size: 1.35rem;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+    animation: blink 1.5s infinite alternate;
+    border: none;
+  }
+  #musicToggleBtn:hover, #musicToggleBtn:focus {
+    background: linear-gradient(155deg, #d4c300, #f6e500);
+    box-shadow:
+      0 6px 12px #b3a700cc,
+      inset 0 -3px 5px #d4c300;
+    outline: none;
+    transform: translateY(-3px);
+  }
+</style>
+</head>
+<body>
+
+<!-- Landing Page 1 -->
+<section id="landing1" aria-label="Landing page welcome" class="visible">
+  <h1>Welcome to Laboratorium Riset Terpadu UPN "Veteran" Yogyakarta</h1>
+  <p class="slowmo-text" aria-live="polite">Explore innovative research and technology.</p>
+  <button class="btn" id="getStartedBtn" aria-label="Start experience"><cite>&quot;Get Started&quot;<cite></button>
+</section>
+
+<!-- Landing Page 2 -->
+<section id="landing2" aria-label="Landing page information" class="hidden" style="display:none;">
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="nav-left" aria-label="Brand">
+      UPN <span>&quot;Veteran&quot;</span> Yogyakarta
+    </div>
+    <div class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navigation-menu" role="button" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-right" id="navigation-menu">
+      <a href="#virtual-tour" class="nav-link" tabindex="0">Virtual Tour</a>
+      <a href="#about" class="nav-link" tabindex="0">About</a>
+      <a href="#features" class="nav-link" tabindex="0">Features</a>
+      <a href="#contact" class="nav-link" tabindex="0">Contact</a>
+    </div>
+  </nav>
+
+  <button id="backBtn" aria-label="Back to home">Back</button>
+
+  <div id="virtual-tour" tabindex="0">
+    <h2>Virtual Tour</h2>
+    <button class="btn" id="virtualTourBtn" aria-label="Start virtual tour"><cite>&quot;Start Virtual Tour&quot;</cite></button>
+  </div>
+
+  <div class="section" id="about" tabindex="0">
+    <h2>About The Laboratory</h2>
+    <p>Laboratorium Riset Terpadu UPN “Veteran” Yogyakarta merupakan fasilitas riset unggulan yang dibangun untuk mendukung kegiatan penelitian lintas disiplin di lingkungan universitas. Pembangunan gedung ini dimulai pada tahun 2019 dan secara resmi diresmikan pada tanggal 28 Juni 2021. Gedung ini terdiri atas empat lantai dan satu <cite>rooftop</cite>, dengan luas bangunan mencapai kurang lebih 2.800 meter persegi.<p>
+    <p>Laboratorium ini dirancang sebagai pusat kolaborasi antara fakultas, pusat studi, dan mitra eksternal, baik dari dunia industri maupun lembaga pemerintah. Berlokasi di Kampus Condongcatur, Sleman, gedung ini menjadi simbol komitmen UPN “Veteran” Yogyakarta dalam memajukan riset, inovasi, dan pengembangan teknologi. Dilengkapi dengan fasilitas modern dan sistem manajemen laboratorium berbasis digital, Laboratorium Riset Terpadu berperan penting dalam mendukung kegiatan akademik, program Merdeka Belajar Kampus Merdeka (MBKM), serta pengembangan produk riset yang berdampak nyata bagi masyarakat.</p>
+  </div>
+
+  <div class="section" id="features" tabindex="0">
+    <h2>Featured Highlights</h2>
+    <div aria-label="List of featured highlights">
+      <div class="feature-card" tabindex="0">
+        <h3>Fasilitas Riset Terpadu</h3>
+        <p>Pusat riset yang terintegrasi dengan peralatan canggih untuk mendukung kegiatan penelitian multidisiplin dalam satu tempat.</p>
+      </div>
+      <div class="feature-card" tabindex="0">
+        <h3>Teknologi Terkini</cite></h3>
+        <p>Akses ke berbagai perangkat digital mutakhir, sistem pemetaan 3D, alat penginderaan jauh, dan peralatan canggih lainnya untuk meningkatkan ketelitian dan inovasi penelitian.</p>
+      </div>
+      <div class="feature-card" tabindex="0">
+        <h3>Ekosistem Kolaborasi</h3>
+        <p>Mendorong kolaborasi antara mahasiswa, dosen, dan peneliti lintas bidang guna menghasilkan proyek riset yang berdampak luas.</p>
+      </div>
+      <div class="feature-card" tabindex="0">
+        <h3>Ruang Seminar dan Diskusi Cerdas</h3>
+        <p>Ruang seminar dan diskusi yang modern, dilengkapi sistem digital pintar, ideal untuk presentasi, lokakarya, dan forum ilmiah.</p>
+      </div>
+      <div class="feature-card" tabindex="0">
+        <h3>Dukungan untuk Inovasi dan Prototipe</h3>
+        <p>Ruang dan peralatan khusus untuk pengembangan prototipe dan riset eksperimental, mendukung mahasiswa dan peneliti dalam mewujudkan ide menjadi solusi nyata.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="contact" tabindex="0">
+    <h2>Contact Us</h2>
+    <h3>Email</h3>
+    <p><a href="117210012@student.upnvyk.ac.id" target="_blank" rel="noopener noreferrer">117210012@student.upnvyk.ac.id</a></p>
+    <h3>Phone</h3>
+    <p><a href="tel:+62 8560-2939-103" target="_blank" rel="noopener noreferrer">+62 8560-2939-103</a></p>
+    <h3>Address</h3>
+    <p>Jalan Ringroad Utara, Condongcatur, Depok, Sleman, Yogyakarta, Indonesia</p>
+  </div>
+
+  <!-- Background music button -->
+  <button id="musicToggleBtn" aria-label="Toggle background music">&#128266;</button>
+
+  <!-- Background music audio -->
+  <audio id="backgroundMusic" loop>
+    <source src="coffee-with-jazz-327479.mp3" type="audio/mpeg" />
+  </audio>
+</section>
+
+<script>
+  const landing1 = document.getElementById('landing1');
+  const landing2 = document.getElementById('landing2');
+  const getStartedBtn = document.getElementById('getStartedBtn');
+  const virtualTourBtn = document.getElementById('virtualTourBtn');
+  const musicToggleBtn = document.getElementById('musicToggleBtn');
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  const backBtn = document.getElementById('backBtn');
+  const hamburger = document.getElementById('hamburger');
+  const navRight = document.getElementById('navigation-menu');
+
+  // Show and hide with scale/blur fade effect
+  async function showSection(toShow, toHide) {
+    // Hide current
+    toHide.classList.remove('visible');
+    toHide.classList.add('hidden');
+    await new Promise(r => setTimeout(r, 950));
+
+    toHide.style.display = 'none';
+
+    // Show new
+    toShow.style.display = toShow.id === 'landing1' ? 'flex' : 'block';
+    await new Promise(r => setTimeout(r, 30));
+    toShow.classList.remove('hidden');
+    toShow.classList.add('visible');
+  }
+
+  // Initial states
+  landing1.classList.add('visible');
+  landing2.classList.add('hidden');
+  landing2.style.display = 'none';
+  backBtn.style.display = 'none';
+
+  getStartedBtn.addEventListener('click', async () => {
+    await showSection(landing2, landing1);
+    backBtn.style.display = 'block';
+    window.scrollTo(0,0);
+    backgroundMusic.play().catch(() => {});
+    updateMusicIcon();
+  });
+
+  backBtn.addEventListener('click', async () => {
+    await showSection(landing1, landing2);
+    backBtn.style.display = 'none';
+    backgroundMusic.pause();
+  });
+
+  const virtualTourUrl = "https://virtual-tour-intro.vercel.app/";
+  virtualTourBtn.addEventListener('click', () => {
+    window.location.href = virtualTourUrl;
+  });
+
+  // Smooth scroll for navbar anchors
+  document.querySelectorAll('nav a.nav-link').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+      if(target) {
+        target.scrollIntoView({behavior: 'smooth', block:"start"});
+      }
+      // Close menu after clicking on small screens
+      if(window.innerWidth <= 768){
+        toggleMenu(false);
+      }
+    });
+  });
+
+  // Hamburger toggle function
+  function toggleMenu(show) {
+    if(show){
+      navRight.classList.add('open');
+      hamburger.classList.add('open');
+      hamburger.setAttribute('aria-expanded','true');
+    } else {
+      navRight.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded','false');
+    }
+  }
+
+  hamburger.addEventListener('click', () => {
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    toggleMenu(!expanded);
+  });
+
+  hamburger.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      hamburger.click();
+    }
+  });
+
+  function updateMusicIcon(){
+    if(backgroundMusic.paused){
+      musicToggleBtn.innerHTML = '&#128263;';
+      musicToggleBtn.setAttribute('aria-label', 'Turn on background music');
+    } else {
+      musicToggleBtn.innerHTML = '&#128266;';
+      musicToggleBtn.setAttribute('aria-label', 'Turn off background music');
+    }
+  }
+  musicToggleBtn.addEventListener('click', () => {
+    if(backgroundMusic.paused){
+      backgroundMusic.play();
+    } else {
+      backgroundMusic.pause();
+    }
+    updateMusicIcon();
+  });
+
+  const navItems = document.querySelectorAll('nav a, nav button');
+  navItems.forEach(el => {
+    el.addEventListener('focus', () => {
+      el.style.outline = '3px solid #f6e500';
+      el.style.outlineOffset = '3px';
+    });
+    el.addEventListener('blur', () => {
+      el.style.outline = 'none';
+    });
+  });
+</script>
+
+</body>
+</html>
+
